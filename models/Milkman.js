@@ -1,13 +1,5 @@
 const mongoose = require('mongoose')
 
-const documentSchema = new mongoose.Schema({
-  name:    { type: String, required: true },   // "Aadhaar Card"
-  s3Key:   { type: String, required: true },   // "milkmen/RK-aadhaar.pdf"
-  s3Url:   { type: String, required: true },   // full HTTPS URL
-  fileSize:{ type: String },
-  uploadedAt: { type: Date, default: Date.now },
-})
-
 const reviewSummarySchema = new mongoose.Schema({
   totalRating:  { type: Number, default: 0 },
   reviewCount:  { type: Number, default: 0 },
@@ -20,7 +12,7 @@ const milkmanSchema = new mongoose.Schema({
 
   // Basic info
   name:         { type: String, required: true },
-  area:         { type: String, required: true },
+  area:         { type: String, default: '' },
   phone:        { type: String },
   about:        { type: String, maxlength: 500 },
   experience:   { type: String, default: '0 years' },
@@ -29,7 +21,7 @@ const milkmanSchema = new mongoose.Schema({
   color:        { type: String, default: '#E8A838' },  // UI avatar color
 
   // Delivery info
-  price:        { type: Number, required: true, min: 0 },  // per litre in ₹
+  price: { type: Number, default: 0, min: 0 },  // per litre in ₹
   deliveryTime: { type: String, default: '6:00 AM – 7:00 AM' },
   milkType:     [{ type: String }],
   schedule:     [{ type: String, enum: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] }],
@@ -42,9 +34,6 @@ const milkmanSchema = new mongoose.Schema({
   // Stats
   customerCount:{ type: Number, default: 0 },
   reviewSummary: reviewSummarySchema,
-
-  // AWS S3 documents
-  documents:    [documentSchema],
 
 }, { timestamps: true })
 
